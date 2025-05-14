@@ -1,0 +1,25 @@
+
+modLoader="javafml" #mandatory
+loaderVersion="40.3.0-40.3.1"
+license="${mod_license}"
+[[mods]]
+modId="nocturneorigins"
+version="1.0
+displayName="Nocturne Origins"
+authors="Wraith
+[[mixins]]
+config = "mixin.nocturneorigins.json"
+
+description='''Character Screen for Nocturne Modpack'''
+[[dependencies.nocturneorigins]]
+modId="forge"
+mandatory=true
+versionRange="40.3.0-40.3.1"
+ordering="NONE"
+side="BOTH"
+[[dependencies.nocturneorigins]]
+modId="minecraft"
+mandatory=true
+versionRange="1.18.2"
+ordering="NONE"
+side="BOTH"

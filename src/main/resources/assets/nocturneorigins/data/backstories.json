@@ -1,0 +1,19 @@
+{
+  "backstories": [
+    {
+      "id": "wanderer",
+      "title": "The Wanderer",
+      "text": "You were born under a sky of falling stars, destined to walk alone."
+    },
+    {
+      "id": "scholar",
+      "title": "The Scholar",
+      "text": "Curiosity drove you to ancient ruins. Secrets and truth shaped your soul."
+    },
+    {
+      "id": "orphan",
+      "title": "The Orphan",
+      "text": "Left behind by fate, you survived the hard way — your scars run deep."
+    }
+  ]
+}
