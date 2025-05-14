@@ -1,0 +1,97 @@
+1. Create a Race class (data model)
+java
+Copy
+Edit
+public class Race {
+    public final String id;
+    public final String displayName;
+    public final List<String> skinFilenames;
+
+    public Race(String id, String displayName, List<String> skinFilenames) {
+        this.id = id;
+        this.displayName = displayName;
+        this.skinFilenames = skinFilenames;
+    }
+}
+2. Create a RaceManager to load race data
+java
+Copy
+Edit
+public class RaceManager {
+    private static final List<Race> races = new ArrayList<>();
+
+    public static void load() {
+        // Example hardcoded — later load from JSON
+        races.add(new Race("elf", "Elf", List.of("elf1.png", "elf2.png")));
+        races.add(new Race("orc", "Orc", List.of("orc1.png", "orc2.png")));
+        races.add(new Race("human", "Human", List.of("human1.png", "human2.png")));
+    }
+
+    public static List<Race> getRaces() {
+        return races;
+    }
+
+    public static Race getById(String id) {
+        return races.stream().filter(r -> r.id.equals(id)).findFirst().orElse(null);
+    }
+}
+Call RaceManager.load() in commonSetup() like you do with BackstoryManager.
+
+3. Create a RaceSelectionScreen
+Scrollable list of races (or buttons)
+
+Show description or icon if desired
+
+On confirm: set selected race ID in player NBT or temp state
+
+Then open SkinScreen, which filters skins based on race
+
+4. Modify SkinScreen to Filter by Race
+Update SkinScreen to take a Race argument:
+
+java
+Copy
+Edit
+private final Race selectedRace;
+
+public SkinScreen(Screen parent, Race race) {
+    super(new TextComponent("Select Your Appearance"));
+    this.parent = parent;
+    this.selectedRace = race;
+}
+Then, in init():
+
+java
+Copy
+Edit
+for (String textureName : selectedRace.skinFilenames) {
+    SkinEntry entry = new SkinEntry(...);
+    skinList.addSkinEntry(entry);
+}
+5. Update FirstJoinHandler Logic
+Instead of immediately showing SkinScreen, check for a race first:
+
+java
+Copy
+Edit
+if (!tag.contains("RaceID")) {
+    mc.setScreen(new RaceSelectionScreen());
+} else if (!SelectedSkinManager.hasSkin(tag)) {
+    Race selected = RaceManager.getById(tag.getString("RaceID"));
+    mc.setScreen(new SkinScreen(null, selected));
+}
+6. Store Race in Player NBT
+When the player selects a race in RaceSelectionScreen, write:
+
+java
+Copy
+Edit
+mc.player.getPersistentData().putString("RaceID", selectedRace.id);
+Component	Role
+Race class	Stores race ID, display name, and skin list
+RaceManager	Loads and provides access to available races
+RaceSelectionScreen	UI where player picks a race
+Modified SkinScreen	Filters skins based on selected race
+FirstJoinHandler	Shows race screen first, then skin screen
+NBT storage	Stores RaceID per player
+
